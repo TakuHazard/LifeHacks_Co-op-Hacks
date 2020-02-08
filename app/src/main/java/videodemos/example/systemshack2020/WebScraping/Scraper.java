@@ -1,5 +1,9 @@
 package videodemos.example.systemshack2020.WebScraping;
 
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -13,7 +17,7 @@ public class Scraper {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse(" application/x-www-form-urlencoded");
-            RequestBody body = RequestBody.create(mediaType, "");
+            RequestBody body = RequestBody.create(mediaType, "-----------------------------5754573831593373640709689390\nContent-Disposition: form-data; name=\"action\"\n\n_-_-kv-PcE1oNfyamPhBO8syTdBkwhJ7JEiz8J0wKskNb-sUQzYBmJHeS-0LHdy7zK0PJULMpcWyhCONEXNupf9z3avPkskPHQ5jJteCpPLNi4Sj8TGjQnyupTV2B5LmKTt36IXqvDWjcdaYR9sEPwGMV4KVeUsmI9lcTg28_JoroAI8fA\n-----------------------------5754573831593373640709689390\nContent-Disposition: form-data; name=\"searchType\"\n\n\n-----------------------------5754573831593373640709689390\nContent-Disposition: form-data; name=\"id\"\n\n\n-----------------------------5754573831593373640709689390\nContent-Disposition: form-data; name=\"termIds\"\n\n\n-----------------------------5754573831593373640709689390\nContent-Disposition: form-data; name=\"filterByProgram\"\n\nfalse\n-----------------------------5754573831593373640709689390\nContent-Disposition: form-data; name=\"performNewSearch\"\n\ntrue\n-----------------------------5754573831593373640709689390\nContent-Disposition: form-data; name=\"rand\"\n\n3406\n-----------------------------5754573831593373640709689390--\n");
             Request request = new Request.Builder()
                     .url("https://myexperience.sfu.ca/myAccount/dashboard.htm")
                     .method("POST", body)
@@ -27,15 +31,19 @@ public class Scraper {
                     .addHeader("Origin", " https://myexperience.sfu.ca")
                     .addHeader("Connection", " keep-alive")
                     .addHeader("Referer", " https://myexperience.sfu.ca/myAccount/dashboard.htm")
-                    .addHeader("Cookie", " _ga=GA1.2.824960987.1575794095; __utma=242477888.824960987.1575794095.1580770467.1581190050.5; __utmz=242477888.1580770467.4.4.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); PS_DEVICEFEATURES=width:1280 height:800 pixelratio:2 touch:0 geolocation:1 websockets:1 webworkers:1 datepicker:1 dtpicker:0 timepicker:1 dnd:1 sessionstorage:1 localstorage:1 history:1 canvas:1 svg:1 postmessage:1 hc:0 maf:0; JSESSIONID=2C3F97CC2B10853DD7A5994F9DCBFACB; __utmc=242477888")
+                    .addHeader("Cookie", " _ga=GA1.2.824960987.1575794095; __utma=242477888.824960987.1575794095.1580770467.1581190050.5; __utmz=242477888.1580770467.4.4.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); PS_DEVICEFEATURES=width:1280 height:800 pixelratio:2 touch:0 geolocation:1 websockets:1 webworkers:1 datepicker:1 dtpicker:0 timepicker:1 dnd:1 sessionstorage:1 localstorage:1 history:1 canvas:1 svg:1 postmessage:1 hc:0 maf:0; JSESSIONID=AD8FF3F912344111E43D0B68DF27B786; __utmc=242477888")
                     .addHeader("Upgrade-Insecure-Requests", " 1")
                     .addHeader("Authorization", "Basic eWNhMzE2QHNmdS5jYTpTQmRhbngyWDU=")
                     .build();
             Response response = client.newCall(request).execute();
+            final String responseBody = response.body().string();
+            Document doc = Jsoup.parse(responseBody);
+            System.out.println(doc.title());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     public static void main(String[] args) {
         connectToSite("https://myexperience.sfu.ca/myAccount/dashboard.htm");
