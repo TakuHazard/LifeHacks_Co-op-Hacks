@@ -1,5 +1,8 @@
 package videodemos.example.systemshack2020;
 
+import androidx.appcompat.app.AppCompatActivity;
+import videodemos.example.systemshack2020.MenuActivity.JobPostingActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +21,9 @@ public class JobMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_menu);
 
+        Toast.makeText(this, " Job Postings", Toast.LENGTH_LONG).show();
+
+        goToNewPostings();
         Button appliedPostings = (Button) findViewById(R.id.btnAppliedTo);
         appliedPostings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,7 +41,16 @@ public class JobMenu extends AppCompatActivity {
                 startActivity(due_date_activity);
             }
         });
+    }
 
-        Toast.makeText(this, " Job Postings", Toast.LENGTH_LONG).show();
+    private void goToNewPostings() {
+        final Button newPostingsButton = findViewById(R.id.btnNewPostings);
+        newPostingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(view.getContext(), JobPostingActivity.class);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 }
