@@ -7,9 +7,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import videodemos.example.systemshack2020.MenuActivity.ApplicationActivity;
-import videodemos.example.systemshack2020.MenuActivity.AppliedToPostings;
 
 public class JobMenu extends AppCompatActivity {
 
@@ -18,24 +16,22 @@ public class JobMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_menu);
 
-        Button appliedPostings = (Button) findViewById(R.id.btnAppliedTo);
-        appliedPostings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent applied_to = new Intent(JobMenu.this, AppliedToPostings.class);
-                startActivity(applied_to);
-            }
-        });
-
-        Button dueDate = (Button) findViewById(R.id.btnDueDate);
-        dueDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent due_date_activity = new Intent(JobMenu.this, ApplicationActivity.class);
-                startActivity(due_date_activity);
-            }
-        });
-
         Toast.makeText(this, " Job Postings", Toast.LENGTH_LONG).show();
+
+        goToMenuActivity(R.id.btnAppliedTo, ApplicationActivity.class);
+        goToMenuActivity(R.id.btnNewPostings, ApplicationActivity.class);
+        goToMenuActivity(R.id.btnDueDate, ApplicationActivity.class);
     }
+
+    private void goToMenuActivity(final int activityId, final Class activityClass) {
+        final Button newPostingsButton = findViewById(activityId);
+        newPostingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(view.getContext(), activityClass);
+                view.getContext().startActivity(intent);
+            }
+        });
+    }
+
 }
