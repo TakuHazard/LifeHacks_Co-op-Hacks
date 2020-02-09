@@ -8,10 +8,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import videodemos.example.systemshack2020.MenuActivity.ApplicationActivity;
+import videodemos.example.systemshack2020.Model.Posting;
 import videodemos.example.systemshack2020.Postings.AllPostingsActivity;
+import videodemos.example.systemshack2020.WebScraping.Scraper;
 
 public class JobMenu extends AppCompatActivity {
+    ArrayList<Posting> postings = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,17 +25,28 @@ public class JobMenu extends AppCompatActivity {
         setContentView(R.layout.activity_job_menu);
 
         // Toast.makeText(this, " Job Postings", Toast.LENGTH_LONG).show();
-        String url = "https://cas.sfu.ca/cas/login?message=Welcome+to+SFU+myExperience.%20Please+login+with+your+SFU+computing+ID.&allow=student," +
-                "alumni&renew=true&service=https://myexperience.sfu.ca/sfuLogin.htm%3Faction%3Dlogin";
+        String url = "https://myexperience.sfu.ca/myAccount/co-op/postings.htm";
 
 
         String username = getIntent().getStringExtra("USERNAME");
         String password = getIntent().getStringExtra("PASSWORD");
 
+        Scraper scraper = new Scraper();
+        scraper.setup(url, username, password);
+
+
+        String newPostingsValue = scraper.getNewPostingsValue();
+        String applicationsDueTodayValue = scraper.getApplicationsDueTodayValue();
+        String applicationsIn10DaysValue = scraper.getapplicationsIn10DaysValue();
+
+        postings = scraper.getPostings();
 
         goToMenuActivity(R.id.btnAppliedTo, ApplicationActivity.class);
+        setUpNumbers(R.id.btnAppliedTo, applicationsIn10DaysValue);
         goToMenuActivity(R.id.btnNewPostings, ApplicationActivity.class);
+        setUpNumbers(R.id.btnNewPostings, newPostingsValue);
         goToMenuActivity(R.id.btnDueDate, ApplicationActivity.class);
+        setUpNumbers(R.id.btnDueDate, applicationsDueTodayValue);
 
         setUpAllPostingsBtn();
     }
@@ -51,10 +68,15 @@ public class JobMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent allPostingsIntent = new Intent(JobMenu.this, AllPostingsActivity.class);
-                Toast.makeText(JobMenu.this, "Button clicked", Toast.LENGTH_SHORT).show();
+                allPostingsIntent.putExtra("Postings", postings);
                 startActivity(allPostingsIntent);
             }
         });
+    }
+
+    private void setUpNumbers(final int activityId, String text) {
+        final Button btn = findViewById(activityId);
+        btn.setText(text);
     }
 
 }

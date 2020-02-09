@@ -1,6 +1,8 @@
 package videodemos.example.systemshack2020.WebScraping;
 
 
+import android.os.StrictMode;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,29 +22,44 @@ import okhttp3.Response;
 import videodemos.example.systemshack2020.Model.Posting;
 
 public class Scraper {
+    private static Elements newPostingsValue;
+    private static Elements applicationsDueTodayValue;
+    private static Elements applicationsIn10DaysValue;
+
     private static void connectToSite(final String url) {
+        connectToSite(url, null, null);
+    }
+
+    private static void connectToSite(final String url, final String username, final String password) {
         try {
-            OkHttpClient client = new OkHttpClient().newBuilder()
-                    .build();
-            MediaType mediaType = MediaType.parse(" application/x-www-form-urlencoded; charset=UTF-8");
-            RequestBody body = RequestBody.create(mediaType, "action=_-_-FPKUQmHnOooTImKGqhRkZonqpz6Br0NRjtJFoUSIYH-rW71K1CZoXTeWw2wyhifsjzp4F4c_s_2IrlF6wKUsWzLI2j782RwT04VM2uiijOl1kZXQXbjDC7oSN3FwQbkQ9sDmubgX6cx-OF5V45GV_rjd4DAkY0vmELlYuvngG2DOZ6wdBOkJ0EjXfYitWv8M4SLiW2W_&filterByProgram=false&filterByAppQualifier=false&termIds=");
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+            StrictMode.setThreadPolicy(policy);
+            OkHttpClient client = new OkHttpClient();
+
+            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded; charset=UTF-8");
+            RequestBody body = RequestBody.create(mediaType, "action=_-_-5Tlj7rIosBZPXMQEEJiQssROr46M0P2oOccxiXjQeNvD7YODHB2hW2aHAzcvoK5TmUd1Og0yI_9-aQBvhrSv1WcD4dIGH2t2yxE1hrYobTNUpV-OJxsfv2f43V03m3b8-FkSFq2rLkCkCkySGBGL3AcJdYZVTRgQSrKOwA-YJRZ2rtT9Mabd253jVsMwpyGg9KMIinCu&filterByProgram=false&filterByAppQualifier=false&termIds=");
             Request request = new Request.Builder()
                     .url("https://myexperience.sfu.ca/myAccount/co-op/postings.htm")
-                    .method("POST", body)
-                    .addHeader("Host", " myexperience.sfu.ca")
-                    .addHeader("User-Agent", " Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:72.0) Gecko/20100101 Firefox/72.0")
-                    .addHeader("Accept", " text/html, */*; q=0.01")
-                    .addHeader("Accept-Language", " en-US,en;q=0.5")
-                    .addHeader("Accept-Encoding", " gzip, deflate, br")
-                    .addHeader("Content-Type", " application/x-www-form-urlencoded; charset=UTF-8")
-                    .addHeader("X-Requested-With", " XMLHttpRequest")
-                    .addHeader("Content-Length", " 269")
-                    .addHeader("Origin", " https://myexperience.sfu.ca")
-                    .addHeader("Connection", " keep-alive")
-                    .addHeader("Referer", " https://myexperience.sfu.ca/myAccount/co-op/postings.htm")
-                    .addHeader("Cookie", " _ga=GA1.2.824960987.1575794095; __utma=242477888.824960987.1575794095.1580770467.1581190050.5; __utmz=242477888.1580770467.4.4.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); PS_DEVICEFEATURES=width:1280 height:800 pixelratio:2 touch:0 geolocation:1 websockets:1 webworkers:1 datepicker:1 dtpicker:0 timepicker:1 dnd:1 sessionstorage:1 localstorage:1 history:1 canvas:1 svg:1 postmessage:1 hc:0 maf:0; JSESSIONID=AD8FF3F912344111E43D0B68DF27B786; __utmc=242477888")
-                    .addHeader("Authorization", "Basic eWNhMzE2QHNmdS5jYTpTQmRhbngyWDU=")
+                    .post(body)
+                    .addHeader("Host", "myexperience.sfu.ca")
+                    .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0")
+                    .addHeader("Accept", "text/html, */*; q=0.01")
+                    .addHeader("Accept-Language", "en-CA,en-US;q=0.7,en;q=0.3")
+                    .addHeader("Accept-Encoding", "gzip, deflate, br")
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+                    .addHeader("X-Requested-With", "XMLHttpRequest")
+                    .addHeader("Content-Length", "269")
+                    .addHeader("Origin", "https://myexperience.sfu.ca")
+                    .addHeader("Connection", "keep-alive")
+                    .addHeader("Referer", "https://myexperience.sfu.ca/myAccount/co-op/postings.htm")
+                    .addHeader("Cookie", "JSESSIONID=5B7922013421892FD82B8CA1472F93EC; __utma=242477888.846549046.1581203039.1581203039.1581203039.1; __utmc=242477888; __utmz=242477888.1581203039.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none), JSESSIONID=5B7922013421892FD82B8CA1472F93EC; __utma=242477888.846549046.1581203039.1581203039.1581203039.1; __utmc=242477888; __utmz=242477888.1581203039.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=045E28363629FD0460E1E807CE86302A")
+                    .addHeader("Authorization", "Basic Y2xhMzQ1Om9tZ2loYXRldGhpc3NoaXQ=")
+                    .addHeader("Cache-Control", "no-cache")
+                    .addHeader("Postman-Token", "bc9d0d84-6b75-4954-a238-42d38e583edc,9895a45f-b701-4f9a-b22b-f4d355ad4d56")
+                    .addHeader("cache-control", "no-cache")
                     .build();
+
             Response response = client.newCall(request).execute();
             final String responseBody = response.body().string();
             postingsNumber(responseBody);
@@ -51,7 +68,7 @@ public class Scraper {
         }
     }
 
-    public static List<Posting> getPostings() {
+    public static ArrayList<Posting> getPostings() {
         String jobTitle = "Job Title";
         String organization = "Organization";
         String division = "Division";
@@ -61,10 +78,13 @@ public class Scraper {
         ignore.add(division);
 
         try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+            StrictMode.setThreadPolicy(policy);
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
-            MediaType mediaType = MediaType.parse("multipart/form-data; boundary=---------------------------2898415012228");
-            RequestBody body = RequestBody.create(mediaType, "-----------------------------2898415012228\r\nContent-Disposition: form-data; name=\"action\"\r\n\r\n_-_-6wlBpIT-89sVFJeqXm6M4I0xgsEmhgZNmXRIH_zs-n2T_47FxMx-MnVvfGwDfvDS2O9XUXiHqqH5l_EgmjAjwkz5E9xzOesw1nyPrnSfofpju8W_n3ke6IIgA2Kd7JViVFBFAZTR8LQxP1YRqeMzeDuVEzWgGHvCQm3U0H3quw\r\n-----------------------------2898415012228\r\nContent-Disposition: form-data; name=\"performNewSearch\"\r\n\r\ntrue\r\n-----------------------------2898415012228\r\nContent-Disposition: form-data; name=\"cpFilterType\"\r\n\r\nnone\r\n-----------------------------2898415012228\r\nContent-Disposition: form-data; name=\"rand\"\r\n\r\n97808\r\n-----------------------------2898415012228--\r\n");
+            MediaType mediaType = MediaType.parse("multipart/form-data; boundary=---------------------------186381992520782");
+            RequestBody body = RequestBody.create(mediaType, "-----------------------------186381992520782\r\nContent-Disposition: form-data; name=\"action\"\r\n\r\n_-_-01LkUTByi5ut1MIIBc1MV_2-73_ZxmkkoeXSBC8caE5jAhOHb9xIZ55-JJVYjBcb4R8Oe4Bxhiix2ce2Kj2UjP0H4HQ-LfZnZ_u5LFpyMLUqCmf9ncqa9V_wlSTao8CCHHxF5GpaWmGA115-qycHgL_0KRtL7RqoZ1vCoAFS2Q\r\n-----------------------------186381992520782\r\nContent-Disposition: form-data; name=\"performNewSearch\"\r\n\r\ntrue\r\n-----------------------------186381992520782\r\nContent-Disposition: form-data; name=\"cpFilterType\"\r\n\r\nnone\r\n-----------------------------186381992520782\r\nContent-Disposition: form-data; name=\"rand\"\r\n\r\n6460\r\n-----------------------------186381992520782--\r\n");
             Request request = new Request.Builder()
                     .url("https://myexperience.sfu.ca/myAccount/co-op/postings.htm")
                     .post(body)
@@ -73,22 +93,21 @@ public class Scraper {
                     .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
                     .addHeader("Accept-Language", "en-CA,en-US;q=0.7,en;q=0.3")
                     .addHeader("Accept-Encoding", "gzip, deflate, br")
-                    .addHeader("Referer", "https://myexperience.sfu.ca/myAccount/co-op/postings.htm")
-                    .addHeader("Content-Type", "multipart/form-data; boundary=---------------------------2898415012228")
-                    .addHeader("Content-Length", "627")
+                    .addHeader("Content-Type", "multipart/form-data; boundary=---------------------------186381992520782")
+                    .addHeader("Content-Length", "636")
                     .addHeader("Origin", "https://myexperience.sfu.ca")
                     .addHeader("Connection", "keep-alive")
+                    .addHeader("Referer", "https://myexperience.sfu.ca/myAccount/co-op/postings.htm")
                     .addHeader("Cookie", "JSESSIONID=5B7922013421892FD82B8CA1472F93EC; __utma=242477888.846549046.1581203039.1581203039.1581203039.1; __utmc=242477888; __utmz=242477888.1581203039.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none), JSESSIONID=5B7922013421892FD82B8CA1472F93EC; __utma=242477888.846549046.1581203039.1581203039.1581203039.1; __utmc=242477888; __utmz=242477888.1581203039.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=045E28363629FD0460E1E807CE86302A")
                     .addHeader("Upgrade-Insecure-Requests", "1")
-                    .addHeader("Cache-Control", "max-age=0")
-                    .addHeader("Postman-Token", "2b241874-ed32-4a0d-9ff9-bcade8c9a5c2,9f5ce3f9-8fe9-4557-a239-92691e013f98")
+                    .addHeader("Postman-Token", "032330ba-75a4-4290-88ec-f50b382a13b6,7903d656-f095-4b0a-a511-ec9c623378eb")
                     .addHeader("cache-control", "no-cache")
                     .build();
             Response response = client.newCall(request).execute();
             String htmlString = response.body().string();
             Document doc = Jsoup.parse(htmlString);
 
-            List<Posting> postings = new ArrayList<>();
+            ArrayList<Posting> postings = new ArrayList<>();
             Elements table = doc.getElementsByClass("table table-striped table-bordered table-hover gridTable");
             Elements rows = table.select("tr");
             for (int i = 1; i < rows.size(); i++) { //first row is the col names so skip it.
@@ -111,6 +130,7 @@ public class Scraper {
 
                 postings.add(newPosting);
             }
+            System.out.println(postings.size());
 
             return postings;
         } catch (Exception e) {
@@ -125,16 +145,48 @@ public class Scraper {
         final String newPostingsSelector = ".table > tbody:nth-child(1) > tr:nth-child(4) > td:nth-child(1) > span:nth-child(1)";
         final String applicationsDueToday = ".table > tbody:nth-child(1) > tr:nth-child(6) > td:nth-child(1) > span:nth-child(1)";
         final String applicationsIn10DaysSelector = ".table > tbody:nth-child(1) > tr:nth-child(7) > td:nth-child(1) > span:nth-child(1)";
-        Elements newPostingsValue = doc.select(newPostingsSelector);
-        Elements applicationsDueTodayValue = doc.select(applicationsDueToday);
-        Elements applicationsIn10DaysValue = doc.select(applicationsIn10DaysSelector);
+        newPostingsValue = doc.select(newPostingsSelector);
+        applicationsDueTodayValue = doc.select(applicationsDueToday);
+        applicationsIn10DaysValue = doc.select(applicationsIn10DaysSelector);
 
         System.out.println(newPostingsValue.text());
         System.out.println(applicationsDueTodayValue.text());
         System.out.println(applicationsIn10DaysValue.text());
     }
+
     public static void main(String[] args) {
-//        connectToSite("https://myexperience.sfu.ca/myAccount/dashboard.htm");
         getPostings();
+        connectToSite("https://myexperience.sfu.ca/myAccount/co-op/postings.htm");
+    }
+
+    public String getNewPostingsValue() {
+        if (newPostingsValue == null) {
+            return "";
+        }
+        else {
+            return newPostingsValue.text();
+        }
+    }
+
+    public String getApplicationsDueTodayValue() {
+        if (applicationsDueTodayValue == null) {
+            return "";
+        }
+        else {
+            return applicationsDueTodayValue.text();
+        }
+    }
+
+    public String getapplicationsIn10DaysValue() {
+        if (applicationsIn10DaysValue == null) {
+            return "";
+        }
+        else {
+            return applicationsIn10DaysValue.text();
+        }
+    }
+
+    public void setup(String url, String userName, String passWord) {
+        connectToSite(url, userName, passWord);
     }
 }
