@@ -52,7 +52,7 @@ public class JobMenu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent allPostingsIntent = new Intent(JobMenu.this, AllPostingsActivity.class);
                 Toast.makeText(JobMenu.this, "Button clicked", Toast.LENGTH_SHORT).show();
-//                startActivity(allPostingsIntent);
+                startActivity(allPostingsIntent);
             }
         });
     }
