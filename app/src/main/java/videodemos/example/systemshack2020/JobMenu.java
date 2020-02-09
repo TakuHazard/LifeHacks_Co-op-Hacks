@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import videodemos.example.systemshack2020.MenuActivity.ApplicationActivity;
+import videodemos.example.systemshack2020.MenuActivity.DeadlinesActivity;
 
 public class JobMenu extends AppCompatActivity {
 
@@ -20,7 +21,7 @@ public class JobMenu extends AppCompatActivity {
 
         goToMenuActivity(R.id.btnAppliedTo, ApplicationActivity.class);
         goToMenuActivity(R.id.btnNewPostings, ApplicationActivity.class);
-        goToMenuActivity(R.id.btnDueDate, ApplicationActivity.class);
+        goToMenuActivity(R.id.btnDueDate, DeadlinesActivity.class);
     }
 
     private void goToMenuActivity(final int activityId, final Class activityClass) {
@@ -33,5 +34,4 @@ public class JobMenu extends AppCompatActivity {
             }
         });
     }
-
 }

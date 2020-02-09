@@ -49,3 +49,4 @@ public class Scraper {
         connectToSite("https://myexperience.sfu.ca/myAccount/dashboard.htm");
     }
 }
+

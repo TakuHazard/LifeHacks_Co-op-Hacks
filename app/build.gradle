@@ -31,8 +31,8 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation 'commons-codec:commons-codec:1.5'
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
-    implementation'com.squareup.okhttp3:okhttp:3.2.0'
-
+    implementation 'com.squareup.okhttp3:okhttp:3.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
 
 }

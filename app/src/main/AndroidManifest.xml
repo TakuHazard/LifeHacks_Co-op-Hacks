@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MenuActivity.ApplicationActivity"></activity>
+        <activity android:name=".MenuActivity.DeadlinesActivity"></activity>
+        <activity android:name=".MenuActivity.ApplicationActivity" />
         <activity android:name=".MenuActivity.AppliedToPostings" />
         <activity android:name=".MenuActivity.JobPostingActivity" />
         <activity android:name=".JobMenu" />
@@ -20,7 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
