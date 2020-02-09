@@ -30,7 +30,7 @@ public class Scraper {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse(" application/x-www-form-urlencoded; charset=UTF-8");
-            RequestBody body = RequestBody.create(mediaType, "action=_-_-uJT1-XDLpf5-Taqg7CdB1YOziYaCENgiGtRp6T0kb7bhm5Z1xmIqgq06IHLKo98JmZ7TRDevu7dixeAlZZ96iU8Bz5X-0itcpHCXMDsUSAmCEUbFXVsjq0DVy1VHBrqjsEzT0NoYHauTQkcCtdtVaVjxhWYUMJ-lO__f0kyqYblQSVvKBfML_GkDaoGwwZ74F4Qkreps&filterByProgram=false&filterByAppQualifier=false&termIds=");
+            RequestBody body = RequestBody.create(mediaType, "action=_-_-1Q1C3Batv5QjS3XmMgOwCZtDkU93Dunf0DxTZAittBoVxMjCqBYRMyQiDhBeR0CFNWW0-MnokmjzdwFSOPrHjTR1rlXdhW8l6X-uyaimdbEunz3peJkk_g-_VFL3jQ1V5EYCP7HOuwvBu2h-pSTqjd1fzXDDb2ZO-GHY73dGxgPzwtQ2rcLXbZ9LrilM3HXOu8JjXqtP&filterByProgram=false&filterByAppQualifier=false&termIds=");
             Request request = new Request.Builder()
                     .url("https://myexperience.sfu.ca/myAccount/co-op/postings.htm")
                     .method("POST", body)
@@ -42,12 +42,10 @@ public class Scraper {
                     .addHeader("User-Agent", " Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36")
                     .addHeader("Content-Type", " application/x-www-form-urlencoded; charset=UTF-8")
                     .addHeader("Origin", " https://myexperience.sfu.ca")
-                    .addHeader("Sec-Fetch-Site", " same-origin")
-                    .addHeader("Sec-Fetch-Mode", " cors")
-                    .addHeader("Referer", " https://myexperience.sfu.ca/myAccount/career/postings.htm")
-                    .addHeader("Accept-Encoding", " gzip, deflate, br")
-                    .addHeader("Accept-Language", " en-GB,en-US;q=0.9,en;q=0.8")
-                    .addHeader("Cookie", " _ga=GA1.2.214377502.1579231293; __unam=6dca77a-16fe83dfe17-6dcb2ea7-2; _gid=GA1.2.1660404562.1581053259; __utmc=242477888; __utma=242477888.214377502.1579231293.1581202318.1581207458.54; __utmz=242477888.1581207458.54.52.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); JSESSIONID=9A1699C37F4CD1548B56E4A6CE5D2DED")
+                    .addHeader("Connection", " keep-alive")
+                    .addHeader("Referer", " https://myexperience.sfu.ca/myAccount/co-op/postings.htm")
+                    .addHeader("Cookie", " _ga=GA1.2.824960987.1575794095; __utma=242477888.824960987.1575794095.1580770467.1581190050.5; __utmz=242477888.1580770467.4.4.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); PS_DEVICEFEATURES=width:1280 height:800 pixelratio:2 touch:0 geolocation:1 websockets:1 webworkers:1 datepicker:1 dtpicker:0 timepicker:1 dnd:1 sessionstorage:1 localstorage:1 history:1 canvas:1 svg:1 postmessage:1 hc:0 maf:0; JSESSIONID=0A03D734703EED812C01F129777F4C09; __utmc=242477888")
+                    .addHeader("Authorization", "Basic eWNhMzE2QHNmdS5jYTpTQmRhbngyWDU=")
                     .build();
             Response response = client.newCall(request).execute();
             final String responseBody = response.body().string();
