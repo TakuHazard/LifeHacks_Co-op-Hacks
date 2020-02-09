@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import videodemos.example.systemshack2020.MenuActivity.ApplicationActivity;
 import videodemos.example.systemshack2020.Postings.AllPostingsActivity;
 
@@ -17,7 +18,14 @@ public class JobMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_menu);
 
-        Toast.makeText(this, " Job Postings", Toast.LENGTH_LONG).show();
+        // Toast.makeText(this, " Job Postings", Toast.LENGTH_LONG).show();
+        String url = "https://cas.sfu.ca/cas/login?message=Welcome+to+SFU+myExperience.%20Please+login+with+your+SFU+computing+ID.&allow=student," +
+                "alumni&renew=true&service=https://myexperience.sfu.ca/sfuLogin.htm%3Faction%3Dlogin";
+
+
+        String username = getIntent().getStringExtra("USERNAME");
+        String password = getIntent().getStringExtra("PASSWORD");
+
 
         goToMenuActivity(R.id.btnAppliedTo, ApplicationActivity.class);
         goToMenuActivity(R.id.btnNewPostings, ApplicationActivity.class);
