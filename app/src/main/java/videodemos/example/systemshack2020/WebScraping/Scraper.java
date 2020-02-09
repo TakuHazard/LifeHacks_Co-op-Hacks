@@ -17,6 +17,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import videodemos.example.systemshack2020.Model.Posting;
 
 public class Scraper {
     private static void connectToSite(final String url) {
@@ -50,7 +51,7 @@ public class Scraper {
         }
     }
 
-    public static Map<String, String> getPostings() {
+    public static List<Posting> getPostings() {
         String jobTitle = "Job Title";
         String organization = "Organization";
         String division = "Division";
@@ -62,8 +63,8 @@ public class Scraper {
         try {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
-            MediaType mediaType = MediaType.parse("multipart/form-data; boundary=---------------------------816887477617");
-            RequestBody body = RequestBody.create(mediaType, "-----------------------------816887477617\r\nContent-Disposition: form-data; name=\"action\"\r\n\r\n_-_-NP8nKSdim8fQDQ5Nq_GJkG3grbs2nEDc3ip4Zp55K7gD9Uf0eW7jL-1RYea2wCleWOmaXqe5R2h8FUSFLt_9_4eiWGvH1Y7KMUwB0gPDAw2EV4Hgx9r0Ckv7iZLi_3LAUrfDvUPivhLmVo1-RnPd1j-b0NeyBPj1qh_fZq165A\r\n-----------------------------816887477617\r\nContent-Disposition: form-data; name=\"performNewSearch\"\r\n\r\ntrue\r\n-----------------------------816887477617\r\nContent-Disposition: form-data; name=\"cpFilterType\"\r\n\r\nnone\r\n-----------------------------816887477617\r\nContent-Disposition: form-data; name=\"rand\"\r\n\r\n73819\r\n-----------------------------816887477617--\r\n");
+            MediaType mediaType = MediaType.parse("multipart/form-data; boundary=---------------------------2898415012228");
+            RequestBody body = RequestBody.create(mediaType, "-----------------------------2898415012228\r\nContent-Disposition: form-data; name=\"action\"\r\n\r\n_-_-6wlBpIT-89sVFJeqXm6M4I0xgsEmhgZNmXRIH_zs-n2T_47FxMx-MnVvfGwDfvDS2O9XUXiHqqH5l_EgmjAjwkz5E9xzOesw1nyPrnSfofpju8W_n3ke6IIgA2Kd7JViVFBFAZTR8LQxP1YRqeMzeDuVEzWgGHvCQm3U0H3quw\r\n-----------------------------2898415012228\r\nContent-Disposition: form-data; name=\"performNewSearch\"\r\n\r\ntrue\r\n-----------------------------2898415012228\r\nContent-Disposition: form-data; name=\"cpFilterType\"\r\n\r\nnone\r\n-----------------------------2898415012228\r\nContent-Disposition: form-data; name=\"rand\"\r\n\r\n97808\r\n-----------------------------2898415012228--\r\n");
             Request request = new Request.Builder()
                     .url("https://myexperience.sfu.ca/myAccount/co-op/postings.htm")
                     .post(body)
@@ -73,38 +74,42 @@ public class Scraper {
                     .addHeader("Accept-Language", "en-CA,en-US;q=0.7,en;q=0.3")
                     .addHeader("Accept-Encoding", "gzip, deflate, br")
                     .addHeader("Referer", "https://myexperience.sfu.ca/myAccount/co-op/postings.htm")
-                    .addHeader("Content-Type", "multipart/form-data; boundary=---------------------------816887477617")
-                    .addHeader("Content-Length", "622")
+                    .addHeader("Content-Type", "multipart/form-data; boundary=---------------------------2898415012228")
+                    .addHeader("Content-Length", "627")
                     .addHeader("Origin", "https://myexperience.sfu.ca")
                     .addHeader("Connection", "keep-alive")
-                    .addHeader("Cookie", "JSESSIONID=00C65315F6D72B7F0D6115D2F1BE5A82; __utma=242477888.846549046.1581203039.1581203039.1581203039.1; __utmc=242477888; __utmz=242477888.1581203039.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none), JSESSIONID=00C65315F6D72B7F0D6115D2F1BE5A82; __utma=242477888.846549046.1581203039.1581203039.1581203039.1; __utmc=242477888; __utmz=242477888.1581203039.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=045E28363629FD0460E1E807CE86302A")
+                    .addHeader("Cookie", "JSESSIONID=5B7922013421892FD82B8CA1472F93EC; __utma=242477888.846549046.1581203039.1581203039.1581203039.1; __utmc=242477888; __utmz=242477888.1581203039.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none), JSESSIONID=5B7922013421892FD82B8CA1472F93EC; __utma=242477888.846549046.1581203039.1581203039.1581203039.1; __utmc=242477888; __utmz=242477888.1581203039.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=045E28363629FD0460E1E807CE86302A")
                     .addHeader("Upgrade-Insecure-Requests", "1")
                     .addHeader("Cache-Control", "max-age=0")
-                    .addHeader("Postman-Token", "faff256d-f597-4bb9-99b8-f950c0376611,c91da4b9-c8fd-4da1-8b28-58e3316cc22b")
+                    .addHeader("Postman-Token", "2b241874-ed32-4a0d-9ff9-bcade8c9a5c2,9f5ce3f9-8fe9-4557-a239-92691e013f98")
                     .addHeader("cache-control", "no-cache")
                     .build();
             Response response = client.newCall(request).execute();
             String htmlString = response.body().string();
-
             Document doc = Jsoup.parse(htmlString);
-            Elements elements = doc.getElementsByClass("orgDivTitleMaxWidth");
 
-            List<String> temp = new ArrayList<>();
-            for (Element elem: elements) {
-                String text = elem.text();
-                if (temp.size() == 0) {
-                    if (!ignore.contains(text)) {
-                        temp.add(text);
-                    }
-                }
-                else if (!ignore.contains(text) && !text.equals(temp.get(temp.size() - 1))) {
-                    temp.add(text);
-                }
-            }
+            List<Posting> postings = new ArrayList<>();
+            Elements table = doc.getElementsByClass("table table-striped table-bordered table-hover gridTable");
+            Elements rows = table.select("tr");
+            for (int i = 1; i < rows.size(); i++) { //first row is the col names so skip it.
+                Element row = rows.get(i);
+                Elements cols = row.select("td");
 
-            Map<String, String> postings = new HashMap<String, String>();
-            for (int i = 0; i < temp.size(); i += 2) {
-                postings.put(temp.get(i), temp.get(i+1));
+                Posting newPosting = new Posting();
+                newPosting.setApplicationStatus(cols.get(1).text());
+                newPosting.setTags(cols.get(2).text());
+                newPosting.setTerm(cols.get(3).text());
+                newPosting.setId(cols.get(4).text());
+                newPosting.setJobTitle(cols.get(5).text());
+                newPosting.setOrganization(cols.get(6).text());
+                newPosting.setDivision(cols.get(7).text());
+                newPosting.setPositionType(cols.get(8).text());
+                newPosting.setOpenings(cols.get(9).text());
+                newPosting.setInternalStatus(cols.get(10).text());
+                newPosting.setLocation(cols.get(11).text());
+                newPosting.setAppDeadline(cols.get(12).text());
+
+                postings.add(newPosting);
             }
 
             return postings;
