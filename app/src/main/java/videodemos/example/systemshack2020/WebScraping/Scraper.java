@@ -3,6 +3,7 @@ package videodemos.example.systemshack2020.WebScraping;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -11,7 +12,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Scraper {
-
     private static void connectToSite(final String url) {
         try {
             OkHttpClient client = new OkHttpClient().newBuilder()
@@ -37,14 +37,22 @@ public class Scraper {
                     .build();
             Response response = client.newCall(request).execute();
             final String responseBody = response.body().string();
-            Document doc = Jsoup.parse(responseBody);
-            System.out.println(doc.title());
+            postingsNumber(responseBody);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private static void postingsNumber(final String responseBody) {
+        Document doc = Jsoup.parse(responseBody);
+        final String newPostingsSelector = ".table > tbody:nth-child(1) > tr:nth-child(4) > td:nth-child(1) > span:nth-child(1)";
+        final String applicationsIn10DaysSelector = ".table > tbody:nth-child(1) > tr:nth-child(5) > td:nth-child(1) > span:nth-child(1)";
+        Elements newPostingsValue = doc.select(newPostingsSelector);
+        Elements applicationsIn10DaysValue = doc.select(applicationsIn10DaysSelector);
 
+        System.out.println(newPostingsValue.text());
+        System.out.println(applicationsIn10DaysValue.text());
+    }
     public static void main(String[] args) {
         connectToSite("https://myexperience.sfu.ca/myAccount/dashboard.htm");
     }
