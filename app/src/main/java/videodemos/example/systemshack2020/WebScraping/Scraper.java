@@ -3,6 +3,13 @@ package videodemos.example.systemshack2020.WebScraping;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -44,8 +51,75 @@ public class Scraper {
         }
     }
 
+    public static Map<String, String> getPostings() {
+        String jobTitle = "Job Title";
+        String organization = "Organization";
+        String division = "Division";
+        List<String> ignore = new ArrayList<String>();
+        ignore.add(jobTitle);
+        ignore.add(organization);
+        ignore.add(division);
+
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("multipart/form-data; boundary=---------------------------816887477617");
+            RequestBody body = RequestBody.create(mediaType, "-----------------------------816887477617\r\nContent-Disposition: form-data; name=\"action\"\r\n\r\n_-_-NP8nKSdim8fQDQ5Nq_GJkG3grbs2nEDc3ip4Zp55K7gD9Uf0eW7jL-1RYea2wCleWOmaXqe5R2h8FUSFLt_9_4eiWGvH1Y7KMUwB0gPDAw2EV4Hgx9r0Ckv7iZLi_3LAUrfDvUPivhLmVo1-RnPd1j-b0NeyBPj1qh_fZq165A\r\n-----------------------------816887477617\r\nContent-Disposition: form-data; name=\"performNewSearch\"\r\n\r\ntrue\r\n-----------------------------816887477617\r\nContent-Disposition: form-data; name=\"cpFilterType\"\r\n\r\nnone\r\n-----------------------------816887477617\r\nContent-Disposition: form-data; name=\"rand\"\r\n\r\n73819\r\n-----------------------------816887477617--\r\n");
+            Request request = new Request.Builder()
+                    .url("https://myexperience.sfu.ca/myAccount/co-op/postings.htm")
+                    .post(body)
+                    .addHeader("Host", "myexperience.sfu.ca")
+                    .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0")
+                    .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                    .addHeader("Accept-Language", "en-CA,en-US;q=0.7,en;q=0.3")
+                    .addHeader("Accept-Encoding", "gzip, deflate, br")
+                    .addHeader("Referer", "https://myexperience.sfu.ca/myAccount/co-op/postings.htm")
+                    .addHeader("Content-Type", "multipart/form-data; boundary=---------------------------816887477617")
+                    .addHeader("Content-Length", "622")
+                    .addHeader("Origin", "https://myexperience.sfu.ca")
+                    .addHeader("Connection", "keep-alive")
+                    .addHeader("Cookie", "JSESSIONID=00C65315F6D72B7F0D6115D2F1BE5A82; __utma=242477888.846549046.1581203039.1581203039.1581203039.1; __utmc=242477888; __utmz=242477888.1581203039.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none), JSESSIONID=00C65315F6D72B7F0D6115D2F1BE5A82; __utma=242477888.846549046.1581203039.1581203039.1581203039.1; __utmc=242477888; __utmz=242477888.1581203039.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=045E28363629FD0460E1E807CE86302A")
+                    .addHeader("Upgrade-Insecure-Requests", "1")
+                    .addHeader("Cache-Control", "max-age=0")
+                    .addHeader("Postman-Token", "faff256d-f597-4bb9-99b8-f950c0376611,c91da4b9-c8fd-4da1-8b28-58e3316cc22b")
+                    .addHeader("cache-control", "no-cache")
+                    .build();
+            Response response = client.newCall(request).execute();
+//            System.out.println(response.body().string());
+            String htmlString = response.body().string();
+
+            Document doc = Jsoup.parse(htmlString);
+            Elements elements = doc.getElementsByClass("orgDivTitleMaxWidth");
+
+            List<String> temp = new ArrayList<>();
+            for (Element elem: elements) {
+                String text = elem.text();
+                if (temp.size() == 0) {
+                    if (!ignore.contains(text)) {
+                        temp.add(text);
+                    }
+                }
+                else if (!ignore.contains(text) && !text.equals(temp.get(temp.size() - 1))) {
+                    temp.add(text);
+                }
+            }
+
+            Map<String, String> postings = new HashMap<String, String>();
+            for (int i = 0; i < temp.size(); i += 2) {
+                postings.put(temp.get(i), temp.get(i+1));
+            }
+
+            return postings;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
     public static void main(String[] args) {
-        connectToSite("https://myexperience.sfu.ca/myAccount/dashboard.htm");
+//        connectToSite("https://myexperience.sfu.ca/myAccount/dashboard.htm");
+        getPostings();
     }
 }
