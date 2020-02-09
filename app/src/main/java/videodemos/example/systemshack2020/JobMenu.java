@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import videodemos.example.systemshack2020.MenuActivity.ApplicationActivity;
+import videodemos.example.systemshack2020.WebScraping.Scraper;
 
 public class JobMenu extends AppCompatActivity {
 
@@ -17,17 +18,27 @@ public class JobMenu extends AppCompatActivity {
         setContentView(R.layout.activity_job_menu);
 
         // Toast.makeText(this, " Job Postings", Toast.LENGTH_LONG).show();
-        String url = "https://cas.sfu.ca/cas/login?message=Welcome+to+SFU+myExperience.%20Please+login+with+your+SFU+computing+ID.&allow=student," +
-                "alumni&renew=true&service=https://myexperience.sfu.ca/sfuLogin.htm%3Faction%3Dlogin";
+        String url = "https://myexperience.sfu.ca/myAccount/co-op/postings.htm";
 
 
         String username = getIntent().getStringExtra("USERNAME");
         String password = getIntent().getStringExtra("PASSWORD");
 
+        Scraper scraper = new Scraper();
+        scraper.setup(url, username, password);
+
+
+        String newPostingsValue = scraper.getNewPostingsValue();
+        String applicationsDueTodayValue = scraper.getApplicationsDueTodayValue();
+        String applicationsIn10DaysValue = scraper.getapplicationsIn10DaysValue();
+
 
         goToMenuActivity(R.id.btnAppliedTo, ApplicationActivity.class);
+        setUpNumbers(R.id.btnAppliedTo, applicationsIn10DaysValue);
         goToMenuActivity(R.id.btnNewPostings, ApplicationActivity.class);
+        setUpNumbers(R.id.btnNewPostings, newPostingsValue);
         goToMenuActivity(R.id.btnDueDate, ApplicationActivity.class);
+        setUpNumbers(R.id.btnDueDate, applicationsDueTodayValue);
     }
 
     private void goToMenuActivity(final int activityId, final Class activityClass) {
@@ -39,6 +50,11 @@ public class JobMenu extends AppCompatActivity {
                 view.getContext().startActivity(intent);
             }
         });
+    }
+
+    private void setUpNumbers(final int activityId, String text) {
+        final Button btn = findViewById(activityId);
+        btn.setText(text);
     }
 
 }
