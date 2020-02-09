@@ -46,11 +46,14 @@ public class Scraper {
     private static void postingsNumber(final String responseBody) {
         Document doc = Jsoup.parse(responseBody);
         final String newPostingsSelector = ".table > tbody:nth-child(1) > tr:nth-child(4) > td:nth-child(1) > span:nth-child(1)";
-        final String applicationsIn10DaysSelector = ".table > tbody:nth-child(1) > tr:nth-child(5) > td:nth-child(1) > span:nth-child(1)";
+        final String applicationsDueToday = ".table > tbody:nth-child(1) > tr:nth-child(6) > td:nth-child(1) > span:nth-child(1)";
+        final String applicationsIn10DaysSelector = ".table > tbody:nth-child(1) > tr:nth-child(7) > td:nth-child(1) > span:nth-child(1)";
         Elements newPostingsValue = doc.select(newPostingsSelector);
+        Elements applicationsDueTodayValue = doc.select(applicationsDueToday);
         Elements applicationsIn10DaysValue = doc.select(applicationsIn10DaysSelector);
 
         System.out.println(newPostingsValue.text());
+        System.out.println(applicationsDueTodayValue.text());
         System.out.println(applicationsIn10DaysValue.text());
     }
     public static void main(String[] args) {
