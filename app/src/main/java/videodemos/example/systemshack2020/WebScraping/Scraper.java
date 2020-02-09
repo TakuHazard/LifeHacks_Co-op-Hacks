@@ -85,7 +85,6 @@ public class Scraper {
                     .addHeader("cache-control", "no-cache")
                     .build();
             Response response = client.newCall(request).execute();
-//            System.out.println(response.body().string());
             String htmlString = response.body().string();
 
             Document doc = Jsoup.parse(htmlString);

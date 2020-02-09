@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import videodemos.example.systemshack2020.MenuActivity.ApplicationActivity;
+import videodemos.example.systemshack2020.Postings.AllPostingsActivity;
 
 public class JobMenu extends AppCompatActivity {
 
@@ -21,6 +22,8 @@ public class JobMenu extends AppCompatActivity {
         goToMenuActivity(R.id.btnAppliedTo, ApplicationActivity.class);
         goToMenuActivity(R.id.btnNewPostings, ApplicationActivity.class);
         goToMenuActivity(R.id.btnDueDate, ApplicationActivity.class);
+
+        setUpAllPostingsBtn();
     }
 
     private void goToMenuActivity(final int activityId, final Class activityClass) {
@@ -30,6 +33,18 @@ public class JobMenu extends AppCompatActivity {
             public void onClick(View view) {
                 final Intent intent = new Intent(view.getContext(), activityClass);
                 view.getContext().startActivity(intent);
+            }
+        });
+    }
+
+    private void setUpAllPostingsBtn() {
+        Button btn = (Button) findViewById(R.id.btnAllPostings);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent allPostingsIntent = new Intent(JobMenu.this, AllPostingsActivity.class);
+                Toast.makeText(JobMenu.this, "Button clicked", Toast.LENGTH_SHORT).show();
+//                startActivity(allPostingsIntent);
             }
         });
     }

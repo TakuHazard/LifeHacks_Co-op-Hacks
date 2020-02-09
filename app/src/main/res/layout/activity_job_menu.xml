@@ -87,4 +87,25 @@
         android:text="Due Date"
         app:layout_constraintBaseline_toBaselineOf="@+id/btnDueDate"
         app:layout_constraintStart_toEndOf="@+id/btnDueDate" />
+
+    <Button
+        android:id="@+id/btnAllPostings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="37dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginTop="58dp"
+        android:text="All Postings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNewPostings" />
+
+    <TextView
+        android:id="@+id/allPostings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginLeft="72dp"
+        android:text="All Postings"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnDueDate"
+        app:layout_constraintStart_toEndOf="@+id/btnDueDate" />
 </androidx.constraintlayout.widget.ConstraintLayout>
